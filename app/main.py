@@ -4,9 +4,19 @@ setup_logging()  # MUST run BEFORE importing services
 
 from fastapi import FastAPI
 from app.api import food, history
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="AI Calorie Tracker")
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://kt42gn-4200.csb.app",  # CodeSandbox
+        "http://localhost:4200"        # Local Angular
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(food.router, prefix="/api/food")
 app.include_router(history.router, prefix="/api/history")
 
